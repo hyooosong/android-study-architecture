@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private fun initTabLayout() {
         TabLayoutMediator(binding.mainTab, binding.mainVp) { tab, position ->
             when(position) {
-                0 -> tab.text = "검색"
+                0 -> tab.text = getString(R.string.search)
                 1 -> tab.text = "리뷰"
             }
         }.attach()
