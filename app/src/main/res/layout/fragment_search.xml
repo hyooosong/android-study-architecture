@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="fragment"
+            type="com.example.moviereview.SearchFragment" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,6 +22,7 @@
             android:layout_marginEnd="16dp"
             android:importantForAutofill="no"
             android:inputType="text"
+            android:text="@={fragment.searchMovie}"
             app:layout_constraintEnd_toStartOf="@id/btn_search"
             app:layout_constraintStart_toEndOf="@id/img_search"
             app:layout_constraintTop_toTopOf="parent"
