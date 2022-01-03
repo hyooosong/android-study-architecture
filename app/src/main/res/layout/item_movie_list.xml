@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="model"
+            type="com.example.moviereview.network.MovieResponse.Item" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,12 +26,12 @@
 
         <TextView
             android:id="@+id/textview_movie_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="제목"
+            app:layout_constraintEnd_toEndOf="@id/textview_movie_more"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@id/img_movie"
@@ -36,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="감독"
+            android:text="@{model.director}"
             app:layout_constraintStart_toStartOf="@id/textview_movie_title"
             app:layout_constraintTop_toBottomOf="@id/textview_movie_title" />
 
@@ -45,18 +51,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="년도"
+            android:text="@{model.pubDate}"
             app:layout_constraintStart_toEndOf="@id/textview_movie_director"
             app:layout_constraintTop_toTopOf="@id/textview_movie_director" />
 
         <TextView
             android:id="@+id/textview_movie_actor"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="출연 배우"
+            app:layout_constraintEnd_toEndOf="@id/textview_movie_more"
+            android:text="@{model.actor}"
             app:layout_constraintStart_toStartOf="@id/textview_movie_title"
             app:layout_constraintTop_toBottomOf="@id/textview_movie_director" />
 
@@ -65,7 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="평점"
+            android:text="@{model.userRating}"
+            android:textColor="@color/purple_700"
             app:layout_constraintStart_toStartOf="@id/textview_movie_title"
             app:layout_constraintTop_toBottomOf="@id/textview_movie_actor" />
 
@@ -73,7 +81,7 @@
             android:id="@+id/textview_movie_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_margin="16dp"
             android:text="더보기 >"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

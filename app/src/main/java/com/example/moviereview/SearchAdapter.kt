@@ -1,6 +1,8 @@
 package com.example.moviereview
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.util.Log
@@ -13,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.moviereview.databinding.ItemMovieListBinding
 import com.example.moviereview.network.MovieResponse
 
-class SearchAdapter(private val context: Context) :
+class SearchAdapter(private val itemClick : (MovieResponse.Item) -> Unit) :
     ListAdapter<MovieResponse.Item, SearchAdapter.SearchViewHolder>(SearchDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder =
         SearchViewHolder(
@@ -25,20 +27,24 @@ class SearchAdapter(private val context: Context) :
         )
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(getItem(position), context)
+        holder.bind(getItem(position))
+        holder.onClick(getItem(position), itemClick)
     }
 
     class SearchViewHolder(private val binding: ItemMovieListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(list: MovieResponse.Item, context: Context) {
+        fun bind(list: MovieResponse.Item) {
+            binding.model = list
             binding.textviewMovieTitle.text = removeHtmlTag(list.title).toString()
-            binding.textviewMovieDirector.text = list.director
-            binding.textviewMovieYear.text = list.pubDate
-            binding.textviewMovieActor.text = list.actor
-            binding.textviewMovieRate.text = list.userRating
-            Glide.with(context)
+            Glide.with(binding.imgMovie.context)
                 .load(list.image)
                 .into(binding.imgMovie)
+        }
+
+        fun onClick(list: MovieResponse.Item, itemClick: (MovieResponse.Item) -> Unit) {
+            binding.textviewMovieMore.setOnClickListener {
+                itemClick.invoke(list)
+            }
         }
 
         private fun removeHtmlTag(html : String) =

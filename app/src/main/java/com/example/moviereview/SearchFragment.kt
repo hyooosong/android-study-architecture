@@ -1,6 +1,8 @@
 package com.example.moviereview
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -38,7 +40,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = SearchAdapter(requireContext())
+        adapter = SearchAdapter() {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.link))
+            startActivity(intent)
+        }
         binding.rcvSearch.adapter = adapter
     }
 
