@@ -1,8 +1,5 @@
 package com.example.moviereview
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.util.Log
@@ -51,7 +48,7 @@ class SearchAdapter(private val itemClick : (MovieResponse.Item) -> Unit) :
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(html, 0).toString()
             } else {
-                Log.e("Version Error", "")
+                Log.e("ErrorVersion", "")
             }
     }
 

@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">MovieReview</string>
+    <string name="naver_client_id">CqffDKypVaajB6acrJLK</string>
+    <string name="naver_client_secret">LJ0prk1zCh</string>
+    <string name="try_again">다시 시도해주세요</string>
+
+    <!-- Search -->
     <string name="search">검색</string>
+    <string name="search_enter">검색어를 입력해주세요</string>
+    <string name="search_see_more"><![CDATA[더보기 >]]></string>
+
+    <!-- Review -->
+    <string name="review">리뷰</string>
+
 </resources>
