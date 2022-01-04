@@ -4,7 +4,9 @@ import android.os.Build
 import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +14,10 @@ import com.bumptech.glide.Glide
 import com.example.moviereview.databinding.ItemMovieListBinding
 import com.example.moviereview.network.MovieResponse
 
-class SearchAdapter(private val itemClick : (MovieResponse.Item) -> Unit) :
+class SearchAdapter(
+    private val itemClick: (MovieResponse.Item) -> Unit,
+    private val showDialog: (MovieResponse.Item, String) -> Unit
+) :
     ListAdapter<MovieResponse.Item, SearchAdapter.SearchViewHolder>(SearchDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder =
         SearchViewHolder(
@@ -25,7 +30,8 @@ class SearchAdapter(private val itemClick : (MovieResponse.Item) -> Unit) :
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.onClick(getItem(position), itemClick)
+        holder.onClickMore(getItem(position), itemClick)
+        holder.showReviewDialog(getItem(position), showDialog)
     }
 
     class SearchViewHolder(private val binding: ItemMovieListBinding) :
@@ -38,13 +44,22 @@ class SearchAdapter(private val itemClick : (MovieResponse.Item) -> Unit) :
                 .into(binding.imgMovie)
         }
 
-        fun onClick(list: MovieResponse.Item, itemClick: (MovieResponse.Item) -> Unit) {
+        fun onClickMore(list: MovieResponse.Item, itemClick: (MovieResponse.Item) -> Unit) {
             binding.textviewMovieMore.setOnClickListener {
                 itemClick.invoke(list)
             }
         }
 
-        private fun removeHtmlTag(html : String) =
+        fun showReviewDialog(
+            list: MovieResponse.Item,
+            itemClick: (MovieResponse.Item, String) -> Unit
+        ) {
+            itemView.setOnClickListener {
+                itemClick.invoke(list, removeHtmlTag(list.title).toString())
+            }
+        }
+
+        private fun removeHtmlTag(html: String) =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(html, 0).toString()
             } else {
