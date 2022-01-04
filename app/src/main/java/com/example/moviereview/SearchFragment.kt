@@ -37,8 +37,8 @@ class SearchFragment : Fragment() {
         adapter = SearchAdapter({
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.link))
             startActivity(intent)
-        }, { _, title ->
-            val dialog = ReviewDialog(title)
+        }, { list, title ->
+            val dialog = ReviewDialog(list, title, requireActivity().application)
             dialog.show(childFragmentManager, "REVIEW_DIALOG")
         })
         binding.rcvSearch.adapter = adapter
