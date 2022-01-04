@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_review"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:src="@mipmap/ic_launcher" />
+
+        <RatingBar
+            android:id="@+id/rating_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            app:layout_constraintBottom_toTopOf="@id/textView_review"
+            app:layout_constraintStart_toEndOf="@id/img_review"
+            app:layout_constraintTop_toTopOf="@id/img_review" />
+
+        <TextView
+            android:id="@+id/textView_review"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/img_review"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_review"
+            app:layout_constraintTop_toBottomOf="@id/rating_review"
+            tools:text="한줄평 왈랄ㄹ라라라왈랄ㄹ라라라왈랄ㄹ라라라왈랄ㄹ라라라" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
