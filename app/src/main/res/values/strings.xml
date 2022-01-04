@@ -11,5 +11,8 @@
 
     <!-- Review -->
     <string name="review">리뷰</string>
+    <string name="review_comment">한줄평 남기기</string>
+    <string name="review_positive">등록</string>
+    <string name="review_negative">취소</string>
 
 </resources>

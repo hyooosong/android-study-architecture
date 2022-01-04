@@ -34,17 +34,24 @@ class SearchFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = SearchAdapter() {
+        adapter = SearchAdapter({
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.link))
             startActivity(intent)
-        }
+        }, { _, title ->
+            val dialog = ReviewDialog(title)
+            dialog.show(childFragmentManager, "REVIEW_DIALOG")
+        })
         binding.rcvSearch.adapter = adapter
     }
 
     private fun callMovieList() {
         binding.btnSearch.setOnClickListener {
             if (searchMovie.value.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.search_enter), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.search_enter),
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -60,7 +67,11 @@ class SearchFragment : Fragment() {
                     adapter.submitList(it.body()!!.items)
                 },
                 onError = {
-                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.try_again),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             )
         }
