@@ -1,6 +1,7 @@
 package com.example.moviereview
 
 import android.app.Application
+import com.example.moviereview.network.MovieResponse
 
 class ReviewRepository(application: Application) {
     private var reviewDB = ReviewDB.getInstance(application)
@@ -12,5 +13,31 @@ class ReviewRepository(application: Application) {
         Thread(Runnable {
             reviewDao.insertList(reviewModel)
         }).start()
+    }
+
+    fun updateList(items: MovieResponse.Item, changeReview: String) {
+        Thread(Runnable {
+            reviewDao.updateList(items, changeReview)
+        }).start()
+    }
+
+    fun getItems(items: MovieResponse.Item) : ReviewModel? {
+        var entity : ReviewModel? = null
+        val th = Thread(Runnable {
+            entity = reviewDao.getItems(items)
+        })
+        th.start()
+        th.join()
+        return entity
+    }
+
+    fun hasEntity(items: MovieResponse.Item): Int {
+        var count = 0
+        val th = Thread(Runnable {
+            count = reviewDao.hasEntity(items)
+        })
+        th.start()
+        th.join()
+        return count
     }
 }

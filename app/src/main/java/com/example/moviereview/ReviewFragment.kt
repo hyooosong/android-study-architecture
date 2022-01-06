@@ -1,17 +1,11 @@
 package com.example.moviereview
 
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.moviereview.databinding.FragmentReviewBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
-import kotlin.coroutines.CoroutineContext
 
 class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding
