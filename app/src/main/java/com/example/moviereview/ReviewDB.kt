@@ -10,15 +10,17 @@ abstract class ReviewDB : RoomDatabase() {
     abstract fun reviewDao(): ReviewDAO
 
     companion object {
+        private val gson = Gson()
+
         @Volatile
         private var INSTANCE: ReviewDB? = null
 
         fun getInstance(context: Context) = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: buildDatabase(context, Gson()).also { INSTANCE = it }
+            INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
         }
 
-        private fun buildDatabase(context: Context, gson: Gson) =
-            Room.databaseBuilder(context, ReviewDB::class.java, "Todo.db")
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(context.applicationContext, ReviewDB::class.java, "Todo.db")
                 .addTypeConverter(MovieItemTypeConverter(gson))
                 .build()
     }
