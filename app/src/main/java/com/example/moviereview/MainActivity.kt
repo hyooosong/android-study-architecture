@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initMainViewPager() {
-        binding.mainVp.apply {
+        binding.mainVp.run {
             adapter = object : FragmentStateAdapter(this@MainActivity) {
                 override fun getItemCount() = 2
                 override fun createFragment(position: Int): Fragment {
@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
                         else -> throw IndexOutOfBoundsException()
                     }
                 }
-
             }
         }
     }
