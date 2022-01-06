@@ -1,4 +1,4 @@
-package com.example.moviereview
+package com.example.moviereview.review
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moviereview.room.ReviewModel
 import com.example.moviereview.databinding.ItemReviewListBinding
 
 class ReviewAdapter :

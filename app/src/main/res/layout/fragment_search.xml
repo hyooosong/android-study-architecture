@@ -7,13 +7,13 @@
 
         <variable
             name="fragment"
-            type="com.example.moviereview.SearchFragment" />
+            type="com.example.moviereview.search.SearchFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SearchFragment">
+        tools:context=".search.SearchFragment">
 
         <EditText
             android:id="@+id/editText_search"

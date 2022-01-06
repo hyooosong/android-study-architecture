@@ -1,17 +1,17 @@
-package com.example.moviereview
+package com.example.moviereview.review
 
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.databinding.DialogReviewBinding
 import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.room.ReviewModel
+import com.example.moviereview.room.ReviewRepository
 
 class ReviewDialog(
     private val list: MovieResponse.Item,

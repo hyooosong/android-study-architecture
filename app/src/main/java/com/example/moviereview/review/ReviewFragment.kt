@@ -1,10 +1,11 @@
-package com.example.moviereview
+package com.example.moviereview.review
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.moviereview.room.ReviewRepository
 import com.example.moviereview.databinding.FragmentReviewBinding
 
 class ReviewFragment : Fragment() {

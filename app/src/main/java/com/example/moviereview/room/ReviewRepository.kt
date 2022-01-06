@@ -1,7 +1,9 @@
-package com.example.moviereview
+package com.example.moviereview.room
 
 import android.app.Application
 import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.room.ReviewDB
+import com.example.moviereview.room.ReviewModel
 
 class ReviewRepository(application: Application) {
     private var reviewDB = ReviewDB.getInstance(application)

@@ -1,4 +1,4 @@
-package com.example.moviereview
+package com.example.moviereview.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
