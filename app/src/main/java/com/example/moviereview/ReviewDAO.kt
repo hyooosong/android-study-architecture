@@ -3,6 +3,8 @@ package com.example.moviereview
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
+import com.example.moviereview.network.MovieResponse
 
 @Dao
 interface ReviewDAO {
@@ -11,4 +13,13 @@ interface ReviewDAO {
 
     @Insert
     fun insertList(reviewModel: ReviewModel)
+
+    @Query("UPDATE ReviewList SET review = :changeReview WHERE items = :items")
+    fun updateList(items: MovieResponse.Item, changeReview: String)
+
+    @Query("SELECT * FROM ReviewList WHERE items = :items")
+    fun getItems(items: MovieResponse.Item) : ReviewModel
+
+    @Query("SELECT count(*) FROM ReviewList WHERE items = :items")
+    fun hasEntity(items: MovieResponse.Item): Int
 }
