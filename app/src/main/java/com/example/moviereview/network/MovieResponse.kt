@@ -14,7 +14,7 @@ data class MovieResponse(
         val link: String,
         val pubDate: String,
         val subtitle: String,
-        val title: String,
+        var title: String,
         val userRating: String
     )
 }

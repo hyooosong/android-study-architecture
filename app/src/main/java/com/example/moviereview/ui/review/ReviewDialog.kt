@@ -1,23 +1,20 @@
-package com.example.moviereview
+package com.example.moviereview.ui.review
 
 import android.app.AlertDialog
 import android.app.Application
 import android.app.Dialog
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.databinding.DialogReviewBinding
 import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.room.ReviewModel
+import com.example.moviereview.room.ReviewRepository
+import com.example.moviereview.utils.hideKeyboard
+import com.example.moviereview.utils.removeHtmlTag
 
-class ReviewDialog(
-    private val list: MovieResponse.Item,
-    private val title: String,
-    application: Application
-) : DialogFragment() {
+class ReviewDialog(private val list: MovieResponse.Item, application: Application) :
+    DialogFragment() {
     private lateinit var binding: DialogReviewBinding
     private var reviewRepository = ReviewRepository(application)
 
@@ -35,7 +32,7 @@ class ReviewDialog(
     }
 
     private fun setTitle() {
-        binding.textviewDialogMovie.text = title
+        binding.textviewDialogMovie.text = list.title.removeHtmlTag().toString()
     }
 
     private fun clickNegative() {
@@ -47,7 +44,8 @@ class ReviewDialog(
     private fun clickPositive() {
         binding.btnDialogPositive.setOnClickListener {
             if (hasReview(list)) {
-                reviewRepository.updateList(list, binding.editTextDialogReview.text.toString())
+                reviewRepository.updateReview(list, binding.editTextDialogReview.text.toString())
+                reviewRepository.updateRating(list, binding.ratingDialog.rating)
             } else {
                 reviewRepository.insertList(
                     ReviewModel(
@@ -58,24 +56,19 @@ class ReviewDialog(
                     )
                 )
             }
+            requireContext().hideKeyboard(binding.editTextDialogReview)
 
-            hideKeyboard()
             dismiss()
             Toast.makeText(requireContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setReview() {
-        if(hasReview(list)) {
-            binding.ratingDialog.rating = reviewRepository.getItems(list)!!.rating
-            binding.editTextDialogReview.setText(reviewRepository.getItems(list)!!.review)
+        if (hasReview(list)) {
+            val list = reviewRepository.getItems(list)!!
+            binding.ratingDialog.rating = list.rating
+            binding.editTextDialogReview.setText(list.review)
         }
-    }
-
-    private fun hideKeyboard() {
-        val imm: InputMethodManager =
-            context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.editTextDialogReview.windowToken, 0)
     }
 
     private fun hasReview(items: MovieResponse.Item) = reviewRepository.hasEntity(items) > 0

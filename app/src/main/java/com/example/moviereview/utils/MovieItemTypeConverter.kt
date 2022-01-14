@@ -1,4 +1,4 @@
-package com.example.moviereview
+package com.example.moviereview.utils
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter

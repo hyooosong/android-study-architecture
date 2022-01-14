@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-fun<T> provideService(clazz: Class<T>) : T = Retrofit.Builder()
+fun <T> provideService(clazz: Class<T>): T = Retrofit.Builder()
     .baseUrl("https://openapi.naver.com")
     .addConverterFactory(GsonConverterFactory.create())
     .client(httpLoggingClient())

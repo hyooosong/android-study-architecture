@@ -1,11 +1,12 @@
-package com.example.moviereview
+package com.example.moviereview.ui.review
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.moviereview.databinding.FragmentReviewBinding
+import com.example.moviereview.room.ReviewRepository
 
 class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding
@@ -33,12 +34,7 @@ class ReviewFragment : Fragment() {
     }
 
     private fun setReviewList() {
-        Thread(Runnable {
-            reviewRepository = ReviewRepository(requireActivity().application)
-            val list = reviewRepository.getList()
-            requireActivity().runOnUiThread {
-                adapter.submitList(list)
-            }
-        }).start()
+        reviewRepository = ReviewRepository(requireActivity().application)
+        adapter.submitList(reviewRepository.getList())
     }
 }

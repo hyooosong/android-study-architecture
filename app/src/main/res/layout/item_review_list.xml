@@ -3,23 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="model"
+            type="com.example.moviereview.room.ReviewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/img_review"
+            image="@{model.items.image}"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription"
-            tools:src="@mipmap/ic_launcher" />
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/textView_review_title"
+            removeHtmlTag="@{model.items.title}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -27,13 +35,12 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/textView_review"
-
             app:layout_constraintStart_toEndOf="@id/img_review"
-            app:layout_constraintTop_toTopOf="@id/img_review"
-            tools:text="제목" />
+            app:layout_constraintTop_toTopOf="@id/img_review" />
 
         <TextView
             android:id="@+id/textView_review"
+            review="@{model.review}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
@@ -46,8 +53,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/textView_review_title"
             app:layout_constraintTop_toBottomOf="@id/textView_review_title"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="한줄평 왈랄ㄹ라라라왈랄ㄹ라라라왈랄ㄹ라라라왈랄ㄹ라라라" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
 
         <RatingBar
@@ -55,9 +61,10 @@
             style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:isIndicator="true"
             android:numStars="5"
-            android:layout_marginBottom="10dp"
+            android:rating="@{model.rating}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/textView_review_title"
             app:layout_constraintTop_toBottomOf="@id/textView_review" />
