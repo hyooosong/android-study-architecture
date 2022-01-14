@@ -1,12 +1,13 @@
-package com.example.moviereview
+package com.example.moviereview.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.moviereview.R
 import com.example.moviereview.databinding.ActivityMainBinding
-import com.example.moviereview.review.ReviewFragment
-import com.example.moviereview.search.SearchFragment
+import com.example.moviereview.ui.review.ReviewFragment
+import com.example.moviereview.ui.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {

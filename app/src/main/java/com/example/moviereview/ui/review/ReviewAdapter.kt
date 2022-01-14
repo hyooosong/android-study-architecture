@@ -1,4 +1,4 @@
-package com.example.moviereview.review
+package com.example.moviereview.ui.review
 
 import android.annotation.SuppressLint
 import android.os.Build

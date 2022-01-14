@@ -1,4 +1,4 @@
-package com.example.moviereview.search
+package com.example.moviereview.ui.search
 
 import android.os.Build
 import android.text.Html
@@ -27,7 +27,7 @@ class SearchAdapter(
         )
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(currentList[position])
         holder.onClickMore(getItem(position), itemClick)
         holder.showReviewDialog(getItem(position), showDialog)
     }

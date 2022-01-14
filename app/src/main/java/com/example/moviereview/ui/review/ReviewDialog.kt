@@ -1,4 +1,4 @@
-package com.example.moviereview.review
+package com.example.moviereview.ui.review
 
 import android.app.AlertDialog
 import android.app.Application

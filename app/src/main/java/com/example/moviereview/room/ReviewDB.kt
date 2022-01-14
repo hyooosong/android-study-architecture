@@ -2,7 +2,7 @@ package com.example.moviereview.room
 
 import android.content.Context
 import androidx.room.*
-import com.example.moviereview.MovieItemTypeConverter
+import com.example.moviereview.utils.MovieItemTypeConverter
 import com.google.gson.Gson
 
 @Database(entities = [ReviewModel::class], version = 1)

@@ -1,4 +1,4 @@
-package com.example.moviereview.search
+package com.example.moviereview.ui.search
 
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.R
-import com.example.moviereview.review.ReviewDialog
+import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.databinding.FragmentSearchBinding
 import com.example.moviereview.network.MovieResponse
 import com.example.moviereview.network.RetrofitService
