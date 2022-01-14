@@ -3,18 +3,19 @@ package com.example.moviereview.ui.search
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.R
-import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.databinding.FragmentSearchBinding
 import com.example.moviereview.network.MovieResponse
 import com.example.moviereview.network.RetrofitService
 import com.example.moviereview.network.enqueueListener
+import com.example.moviereview.ui.review.ReviewDialog
+import com.example.moviereview.utils.hideKeyboard
 import retrofit2.Call
 
 class SearchFragment : Fragment() {
@@ -30,6 +31,7 @@ class SearchFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.fragment = this
+
         initRecyclerView()
         callMovieList()
         return binding.root
@@ -39,8 +41,8 @@ class SearchFragment : Fragment() {
         adapter = SearchAdapter({
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.link))
             startActivity(intent)
-        }, { list, title ->
-            val dialog = ReviewDialog(list, title, requireActivity().application)
+        }, { list ->
+            val dialog = ReviewDialog(list, requireActivity().application)
             dialog.show(childFragmentManager, "REVIEW_DIALOG")
         })
         binding.rcvSearch.adapter = adapter
@@ -48,11 +50,11 @@ class SearchFragment : Fragment() {
 
     private fun callMovieList() {
         binding.btnSearch.setOnClickListener {
+            requireContext().hideKeyboard(binding.editTextSearch)
+
             if (searchMovie.value.isNullOrEmpty()) {
                 Toast.makeText(
-                    requireContext(),
-                    getString(R.string.search_enter),
-                    Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.search_enter), Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }
@@ -70,9 +72,7 @@ class SearchFragment : Fragment() {
                 },
                 onError = {
                     Toast.makeText(
-                        requireContext(),
-                        getString(R.string.try_again),
-                        Toast.LENGTH_SHORT
+                        requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT
                     ).show()
                 }
             )

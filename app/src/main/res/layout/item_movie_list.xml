@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.example.moviereview.network.MovieResponse.Item" />
@@ -15,10 +16,10 @@
 
         <ImageView
             android:id="@+id/img_movie"
+            image="@{model.image}"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="16dp"
-            android:src="@mipmap/ic_launcher"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,23 +27,24 @@
 
         <TextView
             android:id="@+id/textview_movie_title"
+            removeHtmlTag="@{model.title}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:ellipsize="end"
-            android:singleLine="true"
-            app:layout_constraintEnd_toEndOf="@id/textview_movie_more"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/textview_movie_more"
             app:layout_constraintStart_toEndOf="@id/img_movie"
             app:layout_constraintTop_toTopOf="@id/img_movie" />
 
         <TextView
             android:id="@+id/textview_movie_director"
+            removeHtmlTag="@{model.director}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{model.director}"
             app:layout_constraintStart_toStartOf="@id/textview_movie_title"
             app:layout_constraintTop_toBottomOf="@id/textview_movie_title" />
 
@@ -57,13 +59,13 @@
 
         <TextView
             android:id="@+id/textview_movie_actor"
+            removeHtmlTag="@{model.actor}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:maxLines="1"
             app:layout_constraintEnd_toEndOf="@id/textview_movie_more"
-            android:text="@{model.actor}"
             app:layout_constraintStart_toStartOf="@id/textview_movie_title"
             app:layout_constraintTop_toBottomOf="@id/textview_movie_director" />
 

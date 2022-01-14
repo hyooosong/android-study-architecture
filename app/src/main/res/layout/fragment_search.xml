@@ -19,27 +19,16 @@
             android:id="@+id/editText_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/ic_baseline_search_24"
             android:importantForAutofill="no"
             android:inputType="text"
             android:text="@={fragment.searchMovie}"
             app:layout_constraintEnd_toStartOf="@id/btn_search"
-            app:layout_constraintStart_toEndOf="@id/img_search"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="LabelFor" />
-
-        <ImageView
-            android:id="@+id/img_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="12dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_baseline_search_24"
-            app:layout_constraintBottom_toBottomOf="@id/editText_search"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/btn_search"

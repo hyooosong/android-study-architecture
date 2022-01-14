@@ -17,5 +17,5 @@ data class ReviewModel(
     val rating: Float,
 
     @ColumnInfo(name = "review")
-    val review: String
+    var review: String
 )

@@ -2,32 +2,44 @@ package com.example.moviereview.room
 
 import android.app.Application
 import com.example.moviereview.network.MovieResponse
-import com.example.moviereview.room.ReviewDB
-import com.example.moviereview.room.ReviewModel
 
 class ReviewRepository(application: Application) {
     private var reviewDB = ReviewDB.getInstance(application)
     private var reviewDao = reviewDB.reviewDao()
 
-    fun getList(): List<ReviewModel> = reviewDao.getList()
+    fun getList(): List<ReviewModel>? {
+        var list: List<ReviewModel>? = null
+        val th = Thread {
+            list = reviewDao.getList()
+        }
+        th.start()
+        th.join()
+        return list
+    }
 
     fun insertList(reviewModel: ReviewModel) {
-        Thread(Runnable {
+        Thread {
             reviewDao.insertList(reviewModel)
-        }).start()
+        }.start()
     }
 
-    fun updateList(items: MovieResponse.Item, changeReview: String) {
-        Thread(Runnable {
-            reviewDao.updateList(items, changeReview)
-        }).start()
+    fun updateReview(items: MovieResponse.Item, changeReview: String) {
+        Thread {
+            reviewDao.updateReview(items, changeReview)
+        }.start()
     }
 
-    fun getItems(items: MovieResponse.Item) : ReviewModel? {
-        var entity : ReviewModel? = null
-        val th = Thread(Runnable {
-            entity = reviewDao.getItems(items)
-        })
+    fun updateRating(items: MovieResponse.Item, changeRating: Float) {
+        Thread {
+            reviewDao.updateRating(items, changeRating)
+        }.start()
+    }
+
+    fun getItems(items: MovieResponse.Item): ReviewModel? {
+        var entity: ReviewModel? = null
+        val th = Thread {
+            entity = reviewDao.getReviewItems(items)
+        }
         th.start()
         th.join()
         return entity
@@ -35,9 +47,9 @@ class ReviewRepository(application: Application) {
 
     fun hasEntity(items: MovieResponse.Item): Int {
         var count = 0
-        val th = Thread(Runnable {
+        val th = Thread {
             count = reviewDao.hasEntity(items)
-        })
+        }
         th.start()
         th.join()
         return count
