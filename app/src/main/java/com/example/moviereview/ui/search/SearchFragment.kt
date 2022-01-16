@@ -11,16 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.R
 import com.example.moviereview.databinding.FragmentSearchBinding
-import com.example.moviereview.network.MovieResponse
-import com.example.moviereview.network.RetrofitService
-import com.example.moviereview.network.enqueueListener
+import com.example.moviereview.presenter.SearchContract
 import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.utils.hideKeyboard
-import retrofit2.Call
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), SearchContract.SearchView {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var adapter: SearchAdapter
+    private lateinit var searchPresenter: SearchPresenter
     var searchMovie = MutableLiveData<String>()
 
     override fun onCreateView(
@@ -29,12 +27,17 @@ class SearchFragment : Fragment() {
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        binding.lifecycleOwner = this
-        binding.fragment = this
+        initPresenter()
+        searchPresenter.takeView(this)
+        binding.presenter = searchPresenter
 
         initRecyclerView()
         callMovieList()
         return binding.root
+    }
+
+    private fun initPresenter() {
+        searchPresenter = SearchPresenter()
     }
 
     private fun initRecyclerView() {
@@ -50,32 +53,24 @@ class SearchFragment : Fragment() {
 
     private fun callMovieList() {
         binding.btnSearch.setOnClickListener {
+            searchPresenter.callMovieList { listToAdapter() }
             requireContext().hideKeyboard(binding.editTextSearch)
 
-            if (searchMovie.value.isNullOrEmpty()) {
+            if(searchPresenter.isNullEditText) {
                 Toast.makeText(
                     requireContext(), getString(R.string.search_enter), Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }
-
-            val call: Call<MovieResponse> =
-                RetrofitService.getInstance().getMovieList(
-                    getString(R.string.naver_client_id),
-                    getString(R.string.naver_client_secret),
-                    searchMovie.value!!
-                )
-
-            call.enqueueListener(
-                onSuccess = {
-                    adapter.submitList(it.body()!!.items)
-                },
-                onError = {
-                    Toast.makeText(
-                        requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT
-                    ).show()
-                }
-            )
         }
+    }
+
+    private fun listToAdapter() {
+        adapter.submitList(searchPresenter.list)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        searchPresenter.dropView()
     }
 }

@@ -6,6 +6,6 @@ interface SearchContract {
     }
 
     interface SearchPresenter : BasePresenter<SearchView> {
-        fun callMovieList()
+        fun callMovieList(listToAdapter: () -> Unit)
     }
 }
