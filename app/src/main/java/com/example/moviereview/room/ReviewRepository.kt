@@ -35,7 +35,7 @@ class ReviewRepository(application: Application) {
         }.start()
     }
 
-    fun getItems(items: MovieResponse.Item): ReviewModel? {
+    fun getReviewItems(items: MovieResponse.Item): ReviewModel? {
         var entity: ReviewModel? = null
         val th = Thread {
             entity = reviewDao.getReviewItems(items)
