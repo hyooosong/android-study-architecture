@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="fragment"
-            type="com.example.moviereview.ui.search.SearchFragment" />
+            name="presenter"
+            type="com.example.moviereview.ui.search.SearchPresenter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             android:drawableStart="@drawable/ic_baseline_search_24"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:text="@={fragment.searchMovie}"
+            android:text="@={presenter.searchMovie}"
             app:layout_constraintEnd_toStartOf="@id/btn_search"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

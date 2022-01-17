@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.example.moviereview.ui.review.ReviewPresenter" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -41,7 +48,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:numStars="5"
-            android:rating="0"
+            android:rating="@{presenter.reviewData.rating}"
             android:stepSize="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +62,7 @@
             android:layout_marginTop="16dp"
             android:importantForAutofill="no"
             android:inputType="text"
+            android:text="@={presenter.reviewContent}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rating_dialog"
