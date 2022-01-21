@@ -7,7 +7,7 @@
 
         <variable
             name="presenter"
-            type="com.example.moviereview.ui.review.ReviewPresenter" />
+            type="com.example.moviereview.ui.review.ReviewDialogPresenter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
