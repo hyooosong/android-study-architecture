@@ -1,6 +1,5 @@
 package com.example.moviereview.ui.search
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.network.MovieResponse
 import com.example.moviereview.network.RetrofitService
@@ -11,8 +10,6 @@ import retrofit2.Call
 class SearchPresenter : SearchContract.SearchPresenter {
     private var searchView: SearchContract.SearchView? = null
     var searchMovie = MutableLiveData<String>()
-    var list = listOf<MovieResponse.Item>()
-    var isNullEditText = false
 
     override fun takeView(view: SearchContract.SearchView) {
         searchView = view
@@ -22,10 +19,9 @@ class SearchPresenter : SearchContract.SearchPresenter {
         searchView = null
     }
 
-    override fun callMovieList(listToAdapter: () -> Unit) {
+    override fun callMovieList() {
         if (searchMovie.value.isNullOrEmpty()) {
-            isNullEditText = true
-            return
+            searchView?.showToast("검색어를 입력해주세요")
         }
 
         val call: Call<MovieResponse> = RetrofitService.getInstance().getMovieList(
@@ -36,11 +32,10 @@ class SearchPresenter : SearchContract.SearchPresenter {
 
         call.enqueueListener(
             onSuccess = {
-                list = it.body()!!.items
-                listToAdapter.invoke()
+                searchView?.listToAdapter(it.body()?.items)
             },
             onError = {
-                Log.e("ERROR_RETROFIT", it.errorBody().toString())
+                searchView?.showToast("다시 시도해주세요")
             }
         )
     }
