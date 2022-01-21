@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.moviereview.databinding.FragmentReviewBinding
 import com.example.moviereview.presenter.ReviewContract
+import com.example.moviereview.room.ReviewModel
 import com.example.moviereview.room.ReviewRepository
 
 class ReviewFragment : Fragment(), ReviewContract.ReviewView {
@@ -19,25 +20,32 @@ class ReviewFragment : Fragment(), ReviewContract.ReviewView {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentReviewBinding.inflate(inflater, container, false)
-        initPresenter()
-        reviewPresenter.takeView(this)
-        initRecyclerView()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initPresenter()
+        initRecyclerView()
     }
 
     private fun initPresenter() {
         reviewPresenter = ReviewPresenter(ReviewRepository(requireActivity().application))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        adapter.submitList(reviewPresenter.setReviewList())
+        reviewPresenter.takeView(this)
     }
 
     private fun initRecyclerView() {
         adapter = ReviewAdapter()
         binding.rcvReview.adapter = adapter
+    }
+
+    override fun listToAdapter(list: List<ReviewModel>?) {
+        adapter.submitList(list)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        reviewPresenter.setReviewList()
     }
 
     override fun onDestroyView() {
