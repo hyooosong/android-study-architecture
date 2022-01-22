@@ -4,9 +4,9 @@
 ![Kotlin](https://img.shields.io/badge/Kotlin%20-1.5.20-orange)  
 
 ## ✨ Android Architecture Pattern
-[1. MVC Pattern](https://github.com/hyooosong/android-study-architecture/blob/mvc/README.md)  
-[2. MVP Pattern](https://github.com/hyooosong/android-study-architecture/blob/mvp/README.md)  
-[3. MVVM Pattern](https://github.com/hyooosong/android-study-architecture/blob/mvvm/README.md)  
+[1. MVC Pattern](https://github.com/hyooosong/android-study-architecture/tree/mvc)  
+[2. MVP Pattern](https://github.com/hyooosong/android-study-architecture/tree/mvp)  
+[3. MVVM Pattern](https://github.com/hyooosong/android-study-architecture/tree/mvvm)  
 
 <br>
  
