@@ -1,4 +1,4 @@
-package com.example.moviereview.network
+package com.example.moviereview.data.remote
 
 import retrofit2.Call
 import retrofit2.http.GET

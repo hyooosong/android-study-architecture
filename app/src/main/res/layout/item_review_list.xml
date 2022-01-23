@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.example.moviereview.room.ReviewModel" />
+            type="com.example.moviereview.data.local.ReviewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

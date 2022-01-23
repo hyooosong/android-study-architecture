@@ -1,7 +1,10 @@
-package com.example.moviereview.room
+package com.example.moviereview.data.local
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.moviereview.utils.MovieItemTypeConverter
 import com.google.gson.Gson
 

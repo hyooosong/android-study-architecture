@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.moviereview.databinding.DialogReviewBinding
-import com.example.moviereview.network.MovieResponse
-import com.example.moviereview.room.ReviewModel
-import com.example.moviereview.room.ReviewRepository
+import com.example.moviereview.data.remote.MovieResponse
+import com.example.moviereview.data.local.ReviewModel
+import com.example.moviereview.data.local.ReviewRepository
 import com.example.moviereview.utils.hideKeyboard
 import com.example.moviereview.utils.removeHtmlTag
 

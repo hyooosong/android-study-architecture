@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.example.moviereview.R
 import com.example.moviereview.databinding.FragmentSearchBinding
-import com.example.moviereview.network.MovieResponse
-import com.example.moviereview.network.RetrofitService
-import com.example.moviereview.network.enqueueListener
+import com.example.moviereview.data.remote.MovieResponse
+import com.example.moviereview.data.remote.RetrofitService
+import com.example.moviereview.remote.enqueueListener
 import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.utils.hideKeyboard
 import retrofit2.Call

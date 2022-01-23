@@ -2,7 +2,7 @@ package com.example.moviereview.utils
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.data.remote.MovieResponse
 import com.google.gson.Gson
 
 @ProvidedTypeConverter

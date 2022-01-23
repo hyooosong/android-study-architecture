@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.moviereview.databinding.FragmentReviewBinding
-import com.example.moviereview.room.ReviewRepository
+import com.example.moviereview.data.local.ReviewRepository
 
 class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding

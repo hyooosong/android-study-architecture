@@ -1,7 +1,7 @@
-package com.example.moviereview.room
+package com.example.moviereview.data.local
 
 import android.app.Application
-import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.data.remote.MovieResponse
 
 class ReviewRepository(application: Application) {
     private var reviewDB = ReviewDB.getInstance(application)

@@ -1,4 +1,4 @@
-package com.example.moviereview.network
+package com.example.moviereview.data.remote
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

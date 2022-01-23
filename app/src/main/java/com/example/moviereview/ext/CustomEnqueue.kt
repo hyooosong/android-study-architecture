@@ -1,4 +1,4 @@
-package com.example.moviereview.network
+package com.example.moviereview.remote
 
 import android.util.Log
 import com.google.gson.GsonBuilder

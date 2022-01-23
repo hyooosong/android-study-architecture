@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviereview.databinding.ItemReviewListBinding
-import com.example.moviereview.room.ReviewModel
+import com.example.moviereview.data.local.ReviewModel
 
 class ReviewAdapter :
     ListAdapter<ReviewModel, ReviewAdapter.ReviewViewHolder>(ReviewDiffUtil()) {

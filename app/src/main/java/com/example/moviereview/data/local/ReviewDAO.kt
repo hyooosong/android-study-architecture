@@ -1,9 +1,9 @@
-package com.example.moviereview.room
+package com.example.moviereview.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.data.remote.MovieResponse
 
 @Dao
 interface ReviewDAO {
