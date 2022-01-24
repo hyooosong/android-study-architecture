@@ -1,34 +1,51 @@
 package com.example.moviereview.ui.review
 
-import android.app.AlertDialog
 import android.app.Application
-import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.moviereview.databinding.DialogReviewBinding
-import com.example.moviereview.data.remote.MovieResponse
-import com.example.moviereview.data.local.ReviewModel
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.moviereview.data.local.ReviewRepository
+import com.example.moviereview.data.remote.MovieResponse
+import com.example.moviereview.databinding.DialogReviewBinding
 import com.example.moviereview.utils.hideKeyboard
 import com.example.moviereview.utils.removeHtmlTag
 
 class ReviewDialog(private val list: MovieResponse.Item, application: Application) :
     DialogFragment() {
     private lateinit var binding: DialogReviewBinding
-    private var reviewRepository = ReviewRepository(application)
+    private val reviewViewModel by viewModels<ReviewViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return ReviewViewModel(ReviewRepository(application)) as T
+            }
+        }
+    }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogReviewBinding.inflate(requireActivity().layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            lifecycleOwner = this@ReviewDialog
+            viewModel = reviewViewModel
+        }
         setTitle()
+        setReview()
         clickNegative()
         clickPositive()
-        setReview()
-        return activity?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setView(binding.root)
-            builder.create()
-        } ?: throw IllegalStateException()
     }
 
     private fun setTitle() {
@@ -37,39 +54,21 @@ class ReviewDialog(private val list: MovieResponse.Item, application: Applicatio
 
     private fun clickNegative() {
         binding.btnDialogNegative.setOnClickListener {
+            requireContext().hideKeyboard(binding.editTextDialogReview)
             dismiss()
         }
     }
 
     private fun clickPositive() {
         binding.btnDialogPositive.setOnClickListener {
-            if (hasReview(list)) {
-                reviewRepository.updateReview(list, binding.editTextDialogReview.text.toString())
-                reviewRepository.updateRating(list, binding.ratingDialog.rating)
-            } else {
-                reviewRepository.insertList(
-                    ReviewModel(
-                        null,
-                        list,
-                        binding.ratingDialog.rating,
-                        binding.editTextDialogReview.text.toString()
-                    )
-                )
-            }
+            reviewViewModel.updateReview(list, binding.ratingDialog.rating)
             requireContext().hideKeyboard(binding.editTextDialogReview)
-
             dismiss()
             Toast.makeText(requireContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setReview() {
-        if (hasReview(list)) {
-            val list = reviewRepository.getItems(list)!!
-            binding.ratingDialog.rating = list.rating
-            binding.editTextDialogReview.setText(list.review)
-        }
+        reviewViewModel.setExistingContent(list)
     }
-
-    private fun hasReview(items: MovieResponse.Item) = reviewRepository.hasEntity(items) > 0
 }

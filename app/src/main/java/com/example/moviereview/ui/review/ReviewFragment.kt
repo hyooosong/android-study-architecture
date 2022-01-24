@@ -5,22 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.moviereview.databinding.FragmentReviewBinding
 import com.example.moviereview.data.local.ReviewRepository
+import com.example.moviereview.databinding.FragmentReviewBinding
 
 class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding
-    private lateinit var reviewRepository: ReviewRepository
-    private lateinit var adapter: ReviewAdapter
+    private val reviewRepository by lazy { ReviewRepository(requireActivity().application) }
+    private val reviewAdapter by lazy { ReviewAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentReviewBinding.inflate(inflater, container, false)
-        initRecyclerView()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
     }
 
     override fun onResume() {
@@ -29,12 +32,10 @@ class ReviewFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = ReviewAdapter()
-        binding.rcvReview.adapter = adapter
+        binding.rcvReview.adapter = reviewAdapter
     }
 
     private fun setReviewList() {
-        reviewRepository = ReviewRepository(requireActivity().application)
-        adapter.submitList(reviewRepository.getList())
+        reviewAdapter.submitList(reviewRepository.getList())
     }
 }
