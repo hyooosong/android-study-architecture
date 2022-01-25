@@ -9,16 +9,27 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.moviereview.R
+import com.example.moviereview.data.remote.MovieDataSourceImpl
 import com.example.moviereview.data.remote.MovieResponse
 import com.example.moviereview.databinding.FragmentSearchBinding
 import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.utils.hideKeyboard
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val searchAdapter by lazy { SearchAdapter(onClickMore, showReviewDialog) }
-    private val searchViewModel by viewModels<SearchViewModel>()
+    private val searchViewModel by viewModels<SearchViewModel>(){
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return SearchViewModel(MovieDataSourceImpl()) as T
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +47,9 @@ class SearchFragment : Fragment() {
         }
 
         initRecyclerView()
-        callMovieList()
+        lifecycleScope.launch {
+            callMovieList()
+        }
     }
 
     private fun initRecyclerView() {
@@ -57,7 +70,6 @@ class SearchFragment : Fragment() {
         binding.btnSearch.setOnClickListener {
             requireContext().hideKeyboard(binding.editTextSearch)
 
-            searchViewModel.getMovieList()
             if (searchViewModel.editTextSearch.value.isNullOrEmpty()) {
                 Toast.makeText(
                     requireContext(), getString(R.string.search_enter), Toast.LENGTH_SHORT
@@ -65,6 +77,7 @@ class SearchFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            searchViewModel.getMovieList()
             searchViewModel.movieList.observe(this, {
                 searchAdapter.submitList(it)
             })
