@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviereview.databinding.ItemMovieListBinding
-import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.data.remote.MovieResponse
 
 class SearchAdapter(
     private val itemClick: (MovieResponse.Item) -> Unit,

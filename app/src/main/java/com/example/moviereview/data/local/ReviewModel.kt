@@ -1,9 +1,9 @@
-package com.example.moviereview.room
+package com.example.moviereview.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.moviereview.network.MovieResponse
+import com.example.moviereview.data.remote.MovieResponse
 
 @Entity(tableName = "ReviewList")
 data class ReviewModel(

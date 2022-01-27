@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.example.moviereview.network.MovieResponse.Item" />
+            type="com.example.moviereview.data.remote.MovieResponse.Item" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

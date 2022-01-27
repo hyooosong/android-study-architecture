@@ -7,17 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.moviereview.data.local.ReviewRepositoryImpl
+import com.example.moviereview.data.remote.MovieResponse
 import com.example.moviereview.databinding.DialogReviewBinding
-import com.example.moviereview.network.MovieResponse
-import com.example.moviereview.presenter.ReviewDialogContract
-import com.example.moviereview.room.ReviewRepository
 import com.example.moviereview.utils.hideKeyboard
 import com.example.moviereview.utils.removeHtmlTag
 
-class ReviewDialog(private val list: MovieResponse.Item, private val application: Application) :
-    DialogFragment(), ReviewDialogContract.ReviewDialogView {
+class ReviewDialog(private val list: MovieResponse.Item, application: Application) :
+    DialogFragment() {
     private lateinit var binding: DialogReviewBinding
-    private lateinit var reviewDialogPresenter: ReviewDialogPresenter
+    private val reviewViewModel by viewModels<ReviewViewModel> {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return ReviewViewModel(ReviewRepositoryImpl()) as T
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,17 +38,14 @@ class ReviewDialog(private val list: MovieResponse.Item, private val application
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initPresenter()
-        binding.presenter = reviewDialogPresenter
+        binding.apply {
+            lifecycleOwner = this@ReviewDialog
+            viewModel = reviewViewModel
+        }
         setTitle()
+        setReview()
         clickNegative()
         clickPositive()
-        reviewDialogPresenter.setReviewContent(list)
-    }
-
-    private fun initPresenter() {
-        reviewDialogPresenter = ReviewDialogPresenter(ReviewRepository(application))
-        reviewDialogPresenter.takeView(this)
     }
 
     private fun setTitle() {
@@ -49,24 +54,21 @@ class ReviewDialog(private val list: MovieResponse.Item, private val application
 
     private fun clickNegative() {
         binding.btnDialogNegative.setOnClickListener {
+            requireContext().hideKeyboard(binding.editTextDialogReview)
             dismiss()
         }
     }
 
     private fun clickPositive() {
         binding.btnDialogPositive.setOnClickListener {
-            reviewDialogPresenter.updateReviewModel(list, binding.ratingDialog.rating)
+            reviewViewModel.updateReview(list, binding.ratingDialog.rating)
             requireContext().hideKeyboard(binding.editTextDialogReview)
             dismiss()
+            Toast.makeText(requireContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        reviewDialogPresenter.dropView()
+    private fun setReview() {
+        reviewViewModel.setExistingContent(list)
     }
 }

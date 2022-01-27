@@ -1,6 +1,5 @@
 package com.example.moviereview.ui.search
 
-import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,16 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.moviereview.R
+import com.example.moviereview.data.remote.MovieDataSourceImpl
+import com.example.moviereview.data.remote.MovieResponse
 import com.example.moviereview.databinding.FragmentSearchBinding
-import com.example.moviereview.network.MovieResponse
-import com.example.moviereview.presenter.SearchContract
 import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.utils.hideKeyboard
+import kotlinx.coroutines.launch
 
-class SearchFragment : Fragment(), SearchContract.SearchView {
+class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var adapter: SearchAdapter
-    private lateinit var searchPresenter: SearchPresenter
+    private val searchAdapter by lazy { SearchAdapter(onClickMore, showReviewDialog) }
+    private val searchViewModel by viewModels<SearchViewModel>() {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return SearchViewModel(MovieDataSourceImpl()) as T
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,53 +41,42 @@ class SearchFragment : Fragment(), SearchContract.SearchView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initPresenter()
-        binding.presenter = searchPresenter
-        initRecyclerView()
-        onClickSearch()
-    }
+        binding.apply {
+            lifecycleOwner = this@SearchFragment
+            viewModel = searchViewModel
+            rcvSearch.adapter = searchAdapter
+        }
 
-    private fun initPresenter() {
-        searchPresenter = SearchPresenter()
-        searchPresenter.takeView(this)
-    }
-
-    private fun initRecyclerView() {
-        adapter = SearchAdapter({
-            onClickMore(it.link)
-        }, { item ->
-            showReviewDialog(item, requireActivity().application)
-        })
-        binding.rcvSearch.adapter = adapter
-    }
-
-    private fun onClickSearch() {
-        binding.btnSearch.setOnClickListener {
-            searchPresenter.callMovieList()
-            requireContext().hideKeyboard(binding.editTextSearch)
+        lifecycleScope.launch {
+            callMovieList()
         }
     }
 
-    override fun onClickMore(link: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+    private val onClickMore: Function1<MovieResponse.Item, Unit> = { item ->
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
         startActivity(intent)
     }
 
-    override fun showReviewDialog(item: MovieResponse.Item, application: Application) {
-        val dialog = ReviewDialog(item, application)
+    private val showReviewDialog: Function1<MovieResponse.Item, Unit> = { item ->
+        val dialog = ReviewDialog(item, requireActivity().application)
         dialog.show(childFragmentManager, "REVIEW_DIALOG")
     }
 
-    override fun listToAdapter(list: List<MovieResponse.Item>?) {
-        adapter.submitList(list)
-    }
+    private fun callMovieList() {
+        binding.btnSearch.setOnClickListener {
+            requireContext().hideKeyboard(binding.editTextSearch)
 
-    override fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
+            if (searchViewModel.editTextSearch.value.isNullOrEmpty()) {
+                Toast.makeText(
+                    requireContext(), getString(R.string.search_enter), Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        searchPresenter.dropView()
+            searchViewModel.getMovieList()
+            searchViewModel.movieList.observe(this, {
+                searchAdapter.submitList(it)
+            })
+        }
     }
 }

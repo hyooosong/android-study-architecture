@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.example.moviereview.data.local.ReviewRepositoryImpl
 import com.example.moviereview.databinding.FragmentReviewBinding
-import com.example.moviereview.presenter.ReviewContract
-import com.example.moviereview.room.ReviewModel
-import com.example.moviereview.room.ReviewRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class ReviewFragment : Fragment(), ReviewContract.ReviewView {
+class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding
-    private lateinit var adapter: ReviewAdapter
-    private lateinit var reviewPresenter: ReviewPresenter
+    private val reviewRepository by lazy { ReviewRepositoryImpl() }
+    private val reviewAdapter by lazy { ReviewAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,31 +27,24 @@ class ReviewFragment : Fragment(), ReviewContract.ReviewView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initPresenter()
         initRecyclerView()
-    }
-
-    private fun initPresenter() {
-        reviewPresenter = ReviewPresenter(ReviewRepository(requireActivity().application))
-        reviewPresenter.takeView(this)
-    }
-
-    private fun initRecyclerView() {
-        adapter = ReviewAdapter()
-        binding.rcvReview.adapter = adapter
-    }
-
-    override fun listToAdapter(list: List<ReviewModel>?) {
-        adapter.submitList(list)
     }
 
     override fun onResume() {
         super.onResume()
-        reviewPresenter.setReviewList()
+        setReviewList()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        reviewPresenter.dropView()
+    private fun initRecyclerView() {
+        binding.rcvReview.adapter = reviewAdapter
+    }
+
+    private fun setReviewList() {
+        lifecycleScope.launch {
+            val list = reviewRepository.getList()
+            withContext(Dispatchers.Main) {
+                reviewAdapter.submitList(list)
+            }
+        }
     }
 }
