@@ -1,6 +1,5 @@
 package com.example.moviereview.ui.review
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ import com.example.moviereview.databinding.DialogReviewBinding
 import com.example.moviereview.utils.hideKeyboard
 import com.example.moviereview.utils.removeHtmlTag
 
-class ReviewDialog(private val list: MovieResponse.Item, application: Application) :
+class ReviewDialog(private val list: MovieResponse.Item) :
     DialogFragment() {
     private lateinit var binding: DialogReviewBinding
     private val reviewViewModel by viewModels<ReviewViewModel> {

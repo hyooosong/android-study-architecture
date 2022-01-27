@@ -58,7 +58,7 @@ class SearchFragment : Fragment() {
     }
 
     private val showReviewDialog: Function1<MovieResponse.Item, Unit> = { item ->
-        val dialog = ReviewDialog(item, requireActivity().application)
+        val dialog = ReviewDialog(item)
         dialog.show(childFragmentManager, "REVIEW_DIALOG")
     }
 
