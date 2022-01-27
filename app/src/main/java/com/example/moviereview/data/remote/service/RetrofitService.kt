@@ -1,5 +1,6 @@
-package com.example.moviereview.data.remote
+package com.example.moviereview.data.remote.service
 
+import com.example.moviereview.data.remote.MovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query

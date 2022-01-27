@@ -1,5 +1,6 @@
 package com.example.moviereview.data.remote
 
+import com.example.moviereview.data.remote.service.RetrofitService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

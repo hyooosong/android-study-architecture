@@ -8,20 +8,20 @@ import com.example.moviereview.data.remote.MovieResponse
 @Dao
 interface ReviewDAO {
     @Query("SELECT * FROM ReviewList")
-    fun getList(): List<ReviewModel>
+    suspend fun getList(): List<ReviewModel>
 
     @Insert
-    fun insertList(reviewModel: ReviewModel)
+    suspend fun insertList(reviewModel: ReviewModel)
 
     @Query("UPDATE ReviewList SET review = :changeReview WHERE items = :items")
-    fun updateReview(items: MovieResponse.Item, changeReview: String)
+    suspend fun updateReview(items: MovieResponse.Item, changeReview: String)
 
     @Query("UPDATE ReviewList SET rating = :changeRating WHERE items = :items")
-    fun updateRating(items: MovieResponse.Item, changeRating: Float)
+    suspend fun updateRating(items: MovieResponse.Item, changeRating: Float)
 
     @Query("SELECT * FROM ReviewList WHERE items = :items")
-    fun getReviewItems(items: MovieResponse.Item): ReviewModel
+    suspend fun getReviewItems(items: MovieResponse.Item): ReviewModel
 
     @Query("SELECT count(*) FROM ReviewList WHERE items = :items")
-    fun hasEntity(items: MovieResponse.Item): Int
+    suspend fun hasEntity(items: MovieResponse.Item): Int
 }

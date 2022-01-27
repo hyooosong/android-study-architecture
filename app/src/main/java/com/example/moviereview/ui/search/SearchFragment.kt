@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private val searchAdapter by lazy { SearchAdapter(onClickMore, showReviewDialog) }
-    private val searchViewModel by viewModels<SearchViewModel>(){
+    private val searchViewModel by viewModels<SearchViewModel>() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return SearchViewModel(MovieDataSourceImpl()) as T
@@ -44,16 +44,12 @@ class SearchFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@SearchFragment
             viewModel = searchViewModel
+            rcvSearch.adapter = searchAdapter
         }
 
-        initRecyclerView()
         lifecycleScope.launch {
             callMovieList()
         }
-    }
-
-    private fun initRecyclerView() {
-        binding.rcvSearch.adapter = searchAdapter
     }
 
     private val onClickMore: Function1<MovieResponse.Item, Unit> = { item ->
