@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviereview.data.local.ReviewRepository
+import com.example.moviereview.data.local.ReviewRepositoryImpl
 import com.example.moviereview.data.remote.MovieResponse
 import com.example.moviereview.databinding.DialogReviewBinding
 import com.example.moviereview.utils.hideKeyboard
@@ -22,7 +22,7 @@ class ReviewDialog(private val list: MovieResponse.Item, application: Applicatio
     private val reviewViewModel by viewModels<ReviewViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ReviewViewModel(ReviewRepository(application)) as T
+                return ReviewViewModel(ReviewRepositoryImpl()) as T
             }
         }
     }
