@@ -1,11 +1,11 @@
 package com.example.moviereview.data.local
 
-import com.example.moviereview.ReviewApp
 import com.example.moviereview.data.remote.MovieResponse
+import javax.inject.Inject
 
-class ReviewRepositoryImpl : ReviewRepository {
-    private var reviewDB = ReviewApp.reviewDB
-    private var reviewDao = reviewDB.reviewDao()
+
+class ReviewRepositoryImpl @Inject constructor(private val reviewDao: ReviewDAO) :
+    ReviewRepository {
 
     override suspend fun getList(): List<ReviewModel> {
         return reviewDao.getList()
