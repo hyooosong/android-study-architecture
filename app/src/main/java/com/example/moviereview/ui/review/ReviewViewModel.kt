@@ -7,15 +7,21 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviereview.data.local.ReviewModel
 import com.example.moviereview.data.local.ReviewRepository
 import com.example.moviereview.data.remote.MovieResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ReviewViewModel(private val reviewRepository: ReviewRepository) : ViewModel() {
+@HiltViewModel
+class ReviewViewModel @Inject constructor(private val reviewRepository: ReviewRepository) :
+    ViewModel() {
     var editTextReviewContent = MutableLiveData<String>()
 
     private val _reviewData = MutableLiveData<ReviewModel>()
     val reviewData: LiveData<ReviewModel> = _reviewData
+
+    suspend fun getReviewList() = reviewRepository.getList()
 
     private suspend fun hasReview(items: MovieResponse.Item) = reviewRepository.hasEntity(items) > 0
 

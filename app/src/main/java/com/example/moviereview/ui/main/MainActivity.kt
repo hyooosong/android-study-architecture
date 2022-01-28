@@ -1,7 +1,7 @@
 package com.example.moviereview.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.moviereview.R
@@ -9,9 +9,11 @@ import com.example.moviereview.databinding.ActivityMainBinding
 import com.example.moviereview.ui.review.ReviewFragment
 import com.example.moviereview.ui.search.SearchFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             adapter = object : FragmentStateAdapter(this@MainActivity) {
                 override fun getItemCount() = 2
                 override fun createFragment(position: Int): Fragment {
-                    return when(position) {
+                    return when (position) {
                         0 -> SearchFragment()
                         1 -> ReviewFragment()
                         else -> throw IndexOutOfBoundsException()
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initTabLayout() {
         TabLayoutMediator(binding.mainTab, binding.mainVp) { tab, position ->
-            when(position) {
+            when (position) {
                 0 -> tab.text = getString(R.string.search)
                 1 -> tab.text = getString(R.string.review)
             }

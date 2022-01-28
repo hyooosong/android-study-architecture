@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviereview.data.remote.MovieDataSource
 import com.example.moviereview.data.remote.MovieResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SearchViewModel(private val dataSource: MovieDataSource) : ViewModel() {
+@HiltViewModel
+class SearchViewModel @Inject constructor(private val dataSource: MovieDataSource) : ViewModel() {
     var editTextSearch = MutableLiveData<String>()
 
     private val _movieList = MutableLiveData<List<MovieResponse.Item>>()

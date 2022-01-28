@@ -7,24 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.moviereview.data.local.ReviewRepositoryImpl
 import com.example.moviereview.data.remote.MovieResponse
 import com.example.moviereview.databinding.DialogReviewBinding
 import com.example.moviereview.utils.hideKeyboard
 import com.example.moviereview.utils.removeHtmlTag
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ReviewDialog(private val list: MovieResponse.Item) :
     DialogFragment() {
     private lateinit var binding: DialogReviewBinding
-    private val reviewViewModel by viewModels<ReviewViewModel> {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ReviewViewModel(ReviewRepositoryImpl()) as T
-            }
-        }
-    }
+    private val reviewViewModel by viewModels<ReviewViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

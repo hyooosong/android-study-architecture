@@ -5,17 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.moviereview.data.local.ReviewRepositoryImpl
 import com.example.moviereview.databinding.FragmentReviewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class ReviewFragment : Fragment() {
     private lateinit var binding: FragmentReviewBinding
-    private val reviewRepository by lazy { ReviewRepositoryImpl() }
     private val reviewAdapter by lazy { ReviewAdapter() }
+    private val reviewViewModel by viewModels<ReviewViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +43,7 @@ class ReviewFragment : Fragment() {
 
     private fun setReviewList() {
         lifecycleScope.launch {
-            val list = reviewRepository.getList()
+            val list = reviewViewModel.getReviewList()
             withContext(Dispatchers.Main) {
                 reviewAdapter.submitList(list)
             }

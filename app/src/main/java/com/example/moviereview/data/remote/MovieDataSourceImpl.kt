@@ -1,8 +1,11 @@
 package com.example.moviereview.data.remote
 
-class MovieDataSourceImpl : MovieDataSource {
+import com.example.moviereview.data.remote.service.RetrofitService
+import javax.inject.Inject
+
+class MovieDataSourceImpl @Inject constructor(private val service: RetrofitService) :
+    MovieDataSource {
     override suspend fun getMovieList(id: String, pw: String, title: String): MovieResponse {
-        return NetworkModule.providerService(NetworkModule.provideRetrofit())
-            .getMovieList(id, pw, title)
+        return service.getMovieList(id, pw, title)
     }
 }
