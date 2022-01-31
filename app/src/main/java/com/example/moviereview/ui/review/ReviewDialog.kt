@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.moviereview.data.remote.MovieResponse
 import com.example.moviereview.databinding.DialogReviewBinding
+import com.example.moviereview.ext.showToast
 import com.example.moviereview.utils.hideKeyboard
 import com.example.moviereview.utils.removeHtmlTag
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +56,7 @@ class ReviewDialog(private val list: MovieResponse.Item) :
             reviewViewModel.updateReview(list, binding.ratingDialog.rating)
             requireContext().hideKeyboard(binding.editTextDialogReview)
             dismiss()
-            Toast.makeText(requireContext(), "리뷰가 등록되었습니다.", Toast.LENGTH_SHORT).show()
+            requireContext().showToast("리뷰가 등록되었습니다")
         }
     }
 
