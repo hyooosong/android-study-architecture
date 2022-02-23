@@ -15,6 +15,7 @@ import com.example.moviereview.ext.showToast
 import com.example.moviereview.ui.review.ReviewDialog
 import com.example.moviereview.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -42,8 +43,7 @@ class SearchFragment : Fragment() {
         lifecycleScope.launch {
             callMovieList()
         }
-        observeSearchNull()
-        observeMovieList()
+        observeEvent()
     }
 
     private val onClickMore: (MovieResponse.Item) -> Unit = { item ->
@@ -59,22 +59,19 @@ class SearchFragment : Fragment() {
     private fun callMovieList() {
         binding.btnSearch.setOnClickListener {
             requireContext().hideKeyboard(binding.editTextSearch)
-            searchViewModel.getMovieList()
+            searchViewModel.getMovieData()
         }
     }
 
-    private fun observeSearchNull() {
-        searchViewModel.event.observe(this, {
-            when(it) {
-                SearchViewModel.Event.NOT_INPUT ->
-                    requireContext().showToast("검색어를 입력하세요")
+    private fun observeEvent() {
+        lifecycleScope.launch {
+            searchViewModel.eventData.collect {
+                when(it) {
+                    is SearchViewModel.EventMovie.Empty -> requireContext().showToast(it.editText.toString())
+                    is SearchViewModel.EventMovie.SetMovie -> searchAdapter.submitList(it.list)
+                }
             }
-        })
-    }
+        }
 
-    private fun observeMovieList() {
-        searchViewModel.movieList.observe(this, {
-            searchAdapter.submitList(it)
-        })
     }
 }

@@ -1,5 +1,6 @@
 package com.example.moviereview.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,8 @@ import com.example.moviereview.data.remote.MovieDataSource
 import com.example.moviereview.data.remote.MovieResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,34 +18,30 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val dataSource: MovieDataSource) : ViewModel() {
 
-    enum class Event {
-        NOT_INPUT
+    sealed class EventMovie {
+        data class Empty(val editText: String?) : EventMovie()
+        data class SetMovie(val list: List<MovieResponse.Item>): EventMovie()
     }
 
     var editTextSearch = MutableLiveData<String>()
 
-    private val _movieList = MutableLiveData<List<MovieResponse.Item>>()
-    val movieList: LiveData<List<MovieResponse.Item>> = _movieList
+    private val _eventData = MutableSharedFlow<EventMovie>()
+    val eventData = _eventData.asSharedFlow()
 
-    private val _event = MutableLiveData<Event>()
-    val event : LiveData<Event> = _event
-
-    fun getMovieList() {
+    fun getMovieData() {
         viewModelScope.launch(Dispatchers.IO) {
             editTextSearch.value?.let {
-                val list = dataSource.getMovieList(
-                    "CqffDKypVaajB6acrJLK",
-                    "LJ0prk1zCh",
-                    editTextSearch.value ?: " "
-                )
-                withContext(Dispatchers.Main) {
-                    _movieList.value = list.items
-                }
+                val list = dataSource.getMovieList("CqffDKypVaajB6acrJLK", "LJ0prk1zCh", it)
+                emitEvent(EventMovie.SetMovie(list.items))
             } ?: run {
-                withContext(Dispatchers.Main) {
-                    _event.value = Event.NOT_INPUT
-                }
+                emitEvent(EventMovie.Empty("검색어를 입력하세요"))
             }
+        }
+    }
+
+    private fun emitEvent(event: EventMovie) {
+        viewModelScope.launch {
+            _eventData.emit(event)
         }
     }
 }
